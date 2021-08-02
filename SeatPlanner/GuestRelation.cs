@@ -26,12 +26,12 @@ namespace SeatPlanner
 
         public static implicit operator string(GuestRelation p)
         {
-            return $"{p.GuestRelationship.Item1} with relation {p.GuestRelationship.Item3} to {p.GuestRelationship.Item2}";
+            return $"{p.GuestRelationship.Item1} with relation '{p.GuestRelationship.Item3}' to {p.GuestRelationship.Item2}";
         }
 
         public override string ToString()
         {
-            return $"{GuestRelationship.Item1} with relation {GuestRelationship.Item3} to {GuestRelationship.Item2}";
+            return $"{GuestRelationship.Item1} with relation '{GuestRelationship.Item3}' to {GuestRelationship.Item2}";
         }
 
         public Guest[] InvolvedGuests()

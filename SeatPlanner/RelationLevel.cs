@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 namespace SeatPlanner
 {
@@ -13,10 +14,6 @@ namespace SeatPlanner
             }
             Level = level;
         }
-        public static implicit operator string(RelationLevel p)
-        {
-            return $"{p.Level}";
-        }
 
         public static RelationLevel Family => new (3);
         public static RelationLevel GoodFriends => new (2);
@@ -24,7 +21,24 @@ namespace SeatPlanner
 
         public override string ToString()
         {
-            return $"{Level}";
+            return Level switch
+            {
+                1 => "Known",
+                2 => "GoodFriends",
+                3 => "Family",
+                _ => ""
+            };
+        }
+
+        public static implicit operator string(RelationLevel p)
+        {
+            return p.Level switch
+            {
+                1 => "Known",
+                2 => "GoodFriends",
+                3 => "Family",
+                _ => ""
+            };
         }
 
         public int CompareTo(object obj)

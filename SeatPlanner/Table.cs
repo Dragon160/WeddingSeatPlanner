@@ -33,7 +33,10 @@ namespace SeatPlanner
         public void PlaceGuestOnTable(Guest guest)
         {
             if(FreeSeats < 1)
-                throw new Exception("Cannot place guest on full table");
+                throw new Exception($"Cannot place guest on full table");
+
+            if(guest.IsSeated)
+                throw new Exception($"Cannot seat guest '{guest}' again");
 
             SeatGuest(guest);
         }

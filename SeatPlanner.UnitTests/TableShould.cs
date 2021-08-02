@@ -28,5 +28,17 @@ namespace SeatPlanner.UnitTests
             var sut = new Table("id", 2, true);
             Assert.Throws<Exception>(()=> sut.PlaceGuestOnTable(new Guest("Anna")));
         }
+
+        [Fact]
+        public void ThrowsWhenPlacingAnAlreadySeatedGuest()
+        {
+            var sut = new Table("id", 2, true);
+            Assert.Throws<Exception>(() =>
+            {
+                var guest = new Guest("Anna");
+                guest.SetSeated();
+                sut.PlaceGuestOnTable(guest);
+            });
+        }
     }
 }

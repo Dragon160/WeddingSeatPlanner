@@ -14,7 +14,7 @@ namespace SeatPlanner
         {
             AddTables();
             AddGuestsAndRelations();
-            PrintGuests();
+            //PrintGuests();
 
             CalculateTablePlan();
             PrintTablePlan();
@@ -23,10 +23,9 @@ namespace SeatPlanner
 
         private void VerifyAllAreSeated()
         {
-            if (_guests.Count != _tables.SelectMany(t => t.SeatedGuests).Count())
-            {
-                Console.WriteLine("--> VERIFICATON ERROR. Not all guests have been seated");
-            }
+            Console.WriteLine(_guests.Count != _tables.SelectMany(t => t.SeatedGuests).Count()
+                ? "--> VERIFICATON ERROR. Not all guests have been seated"
+                : $"All ({_guests.Count}) guests are seated!");
         }
 
         private void CalculateTablePlan()
@@ -51,22 +50,29 @@ namespace SeatPlanner
         private void PlaceForRelationShipLevel(RelationLevel relationLevel)
         {
             var relations = _relations.Where(rel => rel.GuestRelationship.Item3 == relationLevel).ToArray();
-            foreach (var guest in relations.SelectMany(f => f.InvolvedGuests().Distinct()))
+            foreach (var relation in relations)
             {
-                if(guest.IsSeated)
-                    continue;
-                
-                var friendsOfGuest = relations.Where(p => p.ContainsGuest(guest))
-                    .SelectMany(f => f.InvolvedGuests()).Distinct();
 
-                var tableForAll = _tables.FirstOrDefault(t => t.FreeSeats >= friendsOfGuest.Count());
+                var involvedGuests = relation.InvolvedGuests();
+
+                if(involvedGuests.All(p => p.IsSeated))
+                    continue;
+
+                var involvedGuestsAndOtherInvolved =
+                    involvedGuests.SelectMany(involvedGuest =>
+                        relations.Where(r => r.ContainsGuest(involvedGuest)).SelectMany(a => a.InvolvedGuests()))
+                        .Where(g => g.IsSeated == false).Distinct();
+
+
+                var tableForAll = _tables.FirstOrDefault(t => t.FreeSeats >= involvedGuestsAndOtherInvolved.Count());
                 if (tableForAll == null)
                 {
                     // no splitting supported ATM
-                    throw new Exception($"Cannot find a free table for family size of {friendsOfGuest.Count()}");
+                    throw new Exception(
+                        $"Cannot find a free table for {relationLevel} size of {involvedGuestsAndOtherInvolved.Count()} for with {involvedGuestsAndOtherInvolved.First()}");
                 }
 
-                foreach (var people in friendsOfGuest)
+                foreach (var people in involvedGuestsAndOtherInvolved)
                 {
                     tableForAll.PlaceGuestOnTable(people);
                 }
@@ -104,12 +110,9 @@ namespace SeatPlanner
                 new Table("Four", 8),
                 new Table("Five", 8),
                 new Table("Six", 8),
-                new Table("Seven", 8),
-                new Table("Eight", 8),
+                new Table("Seven", 10),
+                new Table("Eight", 10),
                 new Table("Nine", 8),
-                new Table("Ten", 8),
-                new Table("Eleven", 8),
-                new Table("Twelve", 8),
             });
         }
 
@@ -157,11 +160,8 @@ namespace SeatPlanner
             var barbara = new Guest("Barbara R");
             _relations.AddRange(barbara.WithFamily("Michi S").Distinct());
 
-            var alex = new Guest("Alex B");
-            _relations.AddRange(alex.WithFamily("Eva A", "Benni D").Distinct());
-
             var chris = new Guest("Chris B");
-            _relations.AddRange(chris.WithFamily("Steffi A").Distinct());
+            _relations.AddRange(chris.WithFamily("Steffi A", "Eva A", "Benni D", "Alex B").Distinct());
 
             var sonja = new Guest("Sonja K");
             _relations.AddRange(sonja.WithFamily("Cornelia R").Distinct());
@@ -179,24 +179,23 @@ namespace SeatPlanner
             var wagner = new Guest("Christoph W.");
             var atif = new Guest("Atif");
             var marcella = new Guest("Marcella");
+            _relations.Add(GuestRelation.To(wagner, atif, RelationLevel.Family));
+            _relations.Add(GuestRelation.To(barbara, susi, RelationLevel.Family));
+            _relations.Add(GuestRelation.To(sms, wagner, RelationLevel.Family));
+            _relations.Add(GuestRelation.To(marcella, julia, RelationLevel.Family));
             _relations.Add(GuestRelation.To(franzi, max, RelationLevel.GoodFriends));
             _relations.Add(GuestRelation.To(franzi, betzi, RelationLevel.GoodFriends));
             _relations.Add(GuestRelation.To(betzi, bocki, RelationLevel.GoodFriends));
-            _relations.Add(GuestRelation.To(gerry, wolf, RelationLevel.Known));
-            _relations.Add(GuestRelation.To(marcella, julia, RelationLevel.GoodFriends));
             _relations.Add(GuestRelation.To(andi, franz, RelationLevel.GoodFriends));
             _relations.Add(GuestRelation.To(kilian, wolf, RelationLevel.GoodFriends));
             _relations.Add(GuestRelation.To(kilian, andi, RelationLevel.GoodFriends));
-            _relations.Add(GuestRelation.To(alex, chris, RelationLevel.Family));
             _relations.Add(GuestRelation.To(wolf, franz, RelationLevel.GoodFriends));
             _relations.Add(GuestRelation.To(bocki, franz, RelationLevel.GoodFriends));
             _relations.Add(GuestRelation.To(bocki, wolf, RelationLevel.GoodFriends));
             _relations.Add(GuestRelation.To(gerry, franz, RelationLevel.GoodFriends));
-            _relations.Add(GuestRelation.To(wagner, sms, RelationLevel.GoodFriends));
-            _relations.Add(GuestRelation.To(wagner, atif, RelationLevel.Family));
-            _relations.Add(GuestRelation.To(barbara, susi, RelationLevel.Family));
             _relations.Add(GuestRelation.To(max, franz, RelationLevel.Known));
             _relations.Add(GuestRelation.To(max, wolf, RelationLevel.Known));
+            _relations.Add(GuestRelation.To(gerry, wolf, RelationLevel.Known));
 
             _guests.AddRange(_relations.SelectMany(rel => rel.InvolvedGuests()).Distinct());
         }
