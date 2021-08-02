@@ -1,0 +1,13 @@
+C:\Projects\SeatPlanner\bin\Debug\netcoreapp3.1\Projects.exe
+C:\Projects\SeatPlanner\bin\Debug\netcoreapp3.1\Projects.deps.json
+C:\Projects\SeatPlanner\bin\Debug\netcoreapp3.1\Projects.runtimeconfig.json
+C:\Projects\SeatPlanner\bin\Debug\netcoreapp3.1\Projects.runtimeconfig.dev.json
+C:\Projects\SeatPlanner\bin\Debug\netcoreapp3.1\Projects.dll
+C:\Projects\SeatPlanner\bin\Debug\netcoreapp3.1\Projects.pdb
+C:\Projects\SeatPlanner\obj\Debug\netcoreapp3.1\Projects.csprojAssemblyReference.cache
+C:\Projects\SeatPlanner\obj\Debug\netcoreapp3.1\Projects.AssemblyInfoInputs.cache
+C:\Projects\SeatPlanner\obj\Debug\netcoreapp3.1\Projects.AssemblyInfo.cs
+C:\Projects\SeatPlanner\obj\Debug\netcoreapp3.1\Projects.dll
+C:\Projects\SeatPlanner\obj\Debug\netcoreapp3.1\Projects.pdb
+C:\Projects\SeatPlanner\obj\Debug\netcoreapp3.1\Projects.csproj.AssemblyReference.cache
+C:\Projects\SeatPlanner\obj\Debug\netcoreapp3.1\Projects.csproj.CoreCompileInputs.cache
