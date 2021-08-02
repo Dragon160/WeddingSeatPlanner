@@ -60,7 +60,7 @@ namespace SeatPlanner
             Relations.AddRange(Claudia.WithFamily("Jens Wagenführer", "Oma", "Opa").Distinct());
 
             var christophWagner = new Guest("Christoph Wagner");
-            Guests.AddRange(Relations.SelectMany(rel => rel.Guests).Distinct());
+            Guests.AddRange(Relations.SelectMany(rel => rel.InvolvedGuests()).Distinct());
         }
 
         private void PrintGuests()

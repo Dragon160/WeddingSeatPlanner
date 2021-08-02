@@ -31,8 +31,8 @@ namespace SeatPlanner
 
             var guestAndNearNeighours = allRelations
                                         .Where(rel => rel.ContainsGuest(guest))
-                                        .OrderBy(rel => rel.Level)
-                                        .SelectMany(rel => rel.Guests)
+                                        .OrderBy(rel => rel.GuestRelationship.Item3)
+                                        .SelectMany(rel => rel.InvolvedGuests())
                                         .Where(guest => guest.IsSeated == false)
                                         .Take(freeSeats);
 

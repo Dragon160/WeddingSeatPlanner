@@ -6,8 +6,7 @@ namespace SeatPlanner
 {
     public class GuestRelation : ValueObject<GuestRelation>
     {
-        public Guest[] Guests {get;}
-        public RelationLevel Level {get;}
+        public Tuple<Guest, Guest, RelationLevel> GuestRelationship { get; }
 
         private GuestRelation(Guest theGuest, Guest theOtherGuest, RelationLevel level)
         {
@@ -21,23 +20,29 @@ namespace SeatPlanner
                 throw new ArgumentException("Cannot add relation between the same guest");
             }
 
-            Guests = new List<Guest>{ theGuest, theOtherGuest}.OrderBy(g => g.Name).ToArray();
-            Level = level;
+            var guestContainer = new[] { theGuest, theOtherGuest }.OrderBy(g => g.Name).ToArray();
+            GuestRelationship = new Tuple<Guest, Guest, RelationLevel>(guestContainer.First(), guestContainer.Last(), level);
+
         }
 
         public static implicit operator string(GuestRelation p)
         {
-            return $"{p.Guests.First()} with relation {p.Level} to {p.Guests.Last()}";
+            return $"{p.GuestRelationship.Item1} with relation {p.GuestRelationship.Item3} to {p.GuestRelationship.Item2}";
         }
 
         public override string ToString()
         {
-            return $"{Guests.First()} with relation {Level} to {Guests.Last()}";
+            return $"{GuestRelationship.Item1} with relation {GuestRelationship.Item3} to {GuestRelationship.Item2}";
+        }
+
+        public Guest[] InvolvedGuests()
+        {
+            return new[] {GuestRelationship.Item1, GuestRelationship.Item2};
         }
 
         public bool ContainsGuest(Guest guest)
         {
-            return Guests.Contains(guest);
+            return InvolvedGuests().Contains(guest);
         }
 
         public static GuestRelation[] To(Guest guest, Guest[] others, RelationLevel level)
@@ -52,8 +57,7 @@ namespace SeatPlanner
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Guests;
-            yield return Level;
+            yield return GuestRelationship;
         }
     }
 }
