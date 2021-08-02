@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace SeatPlanner.UnitTests
 {
     using System;
@@ -61,5 +63,25 @@ namespace SeatPlanner.UnitTests
         {
             Assert.Throws<ArgumentNullException>(() => GuestRelation.To(null, (Guest)null, RelationLevel.Known));
         }
+
+        [Fact]
+        public void DefineRelationToMultipleGuests()
+        {
+            var guest1 = new Guest("One");
+            var guest2 = new Guest("Two");
+            var guest3 = new Guest("Three");
+
+            var result = GuestRelation.To(guest1, new[] {guest2, guest3}, RelationLevel.GoodFriends);
+
+            Assert.Equal(2, result.Length);
+            Assert.Equal(result.First().GuestRelationship.Item1, guest1);
+            Assert.Equal(result.First().GuestRelationship.Item2, guest2);
+            Assert.Equal(result.First().GuestRelationship.Item3, RelationLevel.GoodFriends);
+
+            Assert.Equal(result.Last().GuestRelationship.Item1, guest1);
+            Assert.Equal(result.Last().GuestRelationship.Item2, guest3);
+            Assert.Equal(result.Last().GuestRelationship.Item3, RelationLevel.GoodFriends);
+        }
     }
+
 }

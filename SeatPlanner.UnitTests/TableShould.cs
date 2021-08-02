@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace SeatPlanner.UnitTests
@@ -8,22 +9,24 @@ namespace SeatPlanner.UnitTests
         public void SeatGuestWhenFreePlaceAvailable()
         {
             var sut = new Table("id", 4);
-            Assert.True(sut.TryPlaceGuest(new Guest("Anna")));
+            sut.PlaceGuestOnTable(new Guest("Anna"));
+
+            Assert.Equal(3, sut.FreeSeats);
         }
 
         [Fact]
-        public void ReturnFalseWhenFull()
+        public void ThrowWhenFull()
         {
             var sut = new Table("id", 1);
-            sut.TryPlaceGuest(new Guest("Anna"));
-            Assert.False(sut.TryPlaceGuest(new Guest("Anna")));
+            sut.PlaceGuestOnTable(new Guest("Hans"));
+            Assert.Throws<Exception>(()=> sut.PlaceGuestOnTable(new Guest("Anna")));
         }
 
         [Fact]
         public void ReserveSeatsForWeddingCouple()
         {
             var sut = new Table("id", 2, true);
-            Assert.False(sut.TryPlaceGuest(new Guest("Anna")));
+            Assert.Throws<Exception>(()=> sut.PlaceGuestOnTable(new Guest("Anna")));
         }
     }
 }

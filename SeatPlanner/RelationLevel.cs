@@ -21,7 +21,6 @@ namespace SeatPlanner
         public static RelationLevel Family => new (3);
         public static RelationLevel GoodFriends => new (2);
         public static RelationLevel Known => new (1);
-        public static RelationLevel Foreigner => new (0);
 
         public override string ToString()
         {

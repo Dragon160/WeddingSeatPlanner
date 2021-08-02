@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,15 +30,12 @@ namespace SeatPlanner
             guest.SetSeated();
         }
 
-        
-
-        public bool TryPlaceGuest(Guest guest)
+        public void PlaceGuestOnTable(Guest guest)
         {
             if(FreeSeats < 1)
-                return false;
+                throw new Exception("Cannot place guest on full table");
 
             SeatGuest(guest);
-            return true;
         }
 
         public static implicit operator string(Table p)

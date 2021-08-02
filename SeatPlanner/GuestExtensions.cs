@@ -10,7 +10,7 @@ namespace SeatPlanner
             var familyMembers = familyNames.Select(name => new Guest(name)).ToList();
             familyMembers.Add(guest);
             return familyMembers
-                .SelectMany(member => GuestRelation.To(member, familyMembers.ToArray(),RelationLevel.Family));
+                .SelectMany(member => GuestRelation.To(member, familyMembers.ToArray(),RelationLevel.Family)).Distinct();
         }
     }
 }

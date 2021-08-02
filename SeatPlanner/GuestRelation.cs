@@ -44,11 +44,6 @@ namespace SeatPlanner
             return InvolvedGuests().Contains(guest);
         }
 
-        public Guest TheOtherPerson(Guest guest)
-        {
-            return InvolvedGuests().Single(g => g != guest);
-        }
-
         public static GuestRelation[] To(Guest guest, Guest[] others, RelationLevel level)
         {
             return others.Where(g => g != guest).Select(otherGuest => new GuestRelation(guest, otherGuest, level)).ToArray();

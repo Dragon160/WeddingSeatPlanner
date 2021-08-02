@@ -14,7 +14,7 @@ namespace SeatPlanner
         {
             AddTables();
             AddGuestsAndRelations();
-            //PrintGuests();
+            PrintGuests();
 
             CalculateTablePlan();
             PrintTablePlan();
@@ -50,25 +50,25 @@ namespace SeatPlanner
 
         private void PlaceForRelationShipLevel(RelationLevel relationLevel)
         {
-            var familyMemberRelationships = _relations.Where(rel => rel.GuestRelationship.Item3 == relationLevel).ToArray();
-            foreach (var member in familyMemberRelationships.SelectMany(f => f.InvolvedGuests()))
+            var relations = _relations.Where(rel => rel.GuestRelationship.Item3 == relationLevel).ToArray();
+            foreach (var guest in relations.SelectMany(f => f.InvolvedGuests().Distinct()))
             {
-                if(member.IsSeated)
+                if(guest.IsSeated)
                     continue;
                 
-                var familyOfMember = familyMemberRelationships.Where(p => p.ContainsGuest(member))
+                var friendsOfGuest = relations.Where(p => p.ContainsGuest(guest))
                     .SelectMany(f => f.InvolvedGuests()).Distinct();
 
-                var freeTableForAllMembers = _tables.FirstOrDefault(t => t.FreeSeats >= familyOfMember.Count());
-                if (freeTableForAllMembers == null)
+                var tableForAll = _tables.FirstOrDefault(t => t.FreeSeats >= friendsOfGuest.Count());
+                if (tableForAll == null)
                 {
                     // no splitting supported ATM
-                    throw new Exception($"Cannot find a free table for family size of {familyOfMember.Count()}");
+                    throw new Exception($"Cannot find a free table for family size of {friendsOfGuest.Count()}");
                 }
 
-                foreach (var guest in familyOfMember)
+                foreach (var people in friendsOfGuest)
                 {
-                    freeTableForAllMembers.TryPlaceGuest(guest);
+                    tableForAll.PlaceGuestOnTable(people);
                 }
 
             }
@@ -80,7 +80,7 @@ namespace SeatPlanner
             if (freeTable == null)
                 throw new Exception("No more free table available");
 
-            freeTable.TryPlaceGuest(guest);
+            freeTable.PlaceGuestOnTable(guest);
         }
 
         private void PrintTablePlan()
@@ -133,6 +133,12 @@ namespace SeatPlanner
             var max = new Guest("Max M");
             _relations.AddRange(max.WithFamily("Anika M.").Distinct());
 
+            var franzi = new Guest("Franzi H");
+            _relations.AddRange(franzi.WithFamily("Flo H").Distinct());
+
+            var betzi = new Guest("Betzi");
+            _relations.AddRange(betzi.WithFamily("Jenny").Distinct());
+
             var gerry = new Guest("Gerry");
             _relations.AddRange(gerry.WithFamily("Petra").Distinct());
 
@@ -160,8 +166,8 @@ namespace SeatPlanner
             var sonja = new Guest("Sonja K");
             _relations.AddRange(sonja.WithFamily("Cornelia R").Distinct());
 
-            var Kilian = new Guest("Kili R");
-            _relations.AddRange(Kilian.WithFamily("Lena R").Distinct());
+            var kilian = new Guest("Kili R");
+            _relations.AddRange(kilian.WithFamily("Lena R").Distinct());
 
             var andi = new Guest("Andreas R");
             _relations.AddRange(andi.WithFamily("Helen B").Distinct());
@@ -172,13 +178,16 @@ namespace SeatPlanner
             var susi = new Guest("Susi");
             var wagner = new Guest("Christoph W.");
             var atif = new Guest("Atif");
-            var marcella = new Guest("marcella");
-            _relations.Add(GuestRelation.To(gerry, wolf, RelationLevel.GoodFriends));
+            var marcella = new Guest("Marcella");
+            _relations.Add(GuestRelation.To(franzi, max, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(franzi, betzi, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(betzi, bocki, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(gerry, wolf, RelationLevel.Known));
             _relations.Add(GuestRelation.To(marcella, julia, RelationLevel.GoodFriends));
             _relations.Add(GuestRelation.To(andi, franz, RelationLevel.GoodFriends));
-            _relations.Add(GuestRelation.To(Kilian, wolf, RelationLevel.GoodFriends));
-            _relations.Add(GuestRelation.To(Kilian, andi, RelationLevel.GoodFriends));
-            _relations.Add(GuestRelation.To(alex, chris, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(kilian, wolf, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(kilian, andi, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(alex, chris, RelationLevel.Family));
             _relations.Add(GuestRelation.To(wolf, franz, RelationLevel.GoodFriends));
             _relations.Add(GuestRelation.To(bocki, franz, RelationLevel.GoodFriends));
             _relations.Add(GuestRelation.To(bocki, wolf, RelationLevel.GoodFriends));
