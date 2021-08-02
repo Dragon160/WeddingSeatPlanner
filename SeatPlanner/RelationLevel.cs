@@ -9,7 +9,7 @@ namespace SeatPlanner
         {
             if (level is > 10 or < 1)
             {
-                throw new ArgumentException("nameof(level) not between 1 and 10)");
+                throw new ArgumentOutOfRangeException($"{level} not between 1 and 10)");
             }
             Level = level;
         }

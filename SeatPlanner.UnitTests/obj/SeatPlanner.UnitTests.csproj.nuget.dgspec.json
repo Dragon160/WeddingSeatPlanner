@@ -1,36 +1,38 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\WeddingSeatPlanner\\SeatPlanner.UnitTests\\SeatPlanner.UnitTests.csproj": {}
+    "C:\\Projects\\Github\\WeddingSeatPlanner\\SeatPlanner.UnitTests\\SeatPlanner.UnitTests.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\WeddingSeatPlanner\\SeatPlanner.UnitTests\\SeatPlanner.UnitTests.csproj": {
+    "C:\\Projects\\Github\\WeddingSeatPlanner\\SeatPlanner.UnitTests\\SeatPlanner.UnitTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\WeddingSeatPlanner\\SeatPlanner.UnitTests\\SeatPlanner.UnitTests.csproj",
+        "projectUniqueName": "C:\\Projects\\Github\\WeddingSeatPlanner\\SeatPlanner.UnitTests\\SeatPlanner.UnitTests.csproj",
         "projectName": "SeatPlanner.UnitTests",
-        "projectPath": "C:\\Projects\\WeddingSeatPlanner\\SeatPlanner.UnitTests\\SeatPlanner.UnitTests.csproj",
-        "packagesPath": "C:\\Users\\probs\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\WeddingSeatPlanner\\SeatPlanner.UnitTests\\obj\\",
+        "projectPath": "C:\\Projects\\Github\\WeddingSeatPlanner\\SeatPlanner.UnitTests\\SeatPlanner.UnitTests.csproj",
+        "packagesPath": "C:\\Users\\Z002A0HD\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\Github\\WeddingSeatPlanner\\SeatPlanner.UnitTests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\probs\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Z002A0HD\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Projects\\WeddingSeatPlanner\\SeatPlanner\\SeatPlanner.csproj": {
-                "projectPath": "C:\\Projects\\WeddingSeatPlanner\\SeatPlanner\\SeatPlanner.csproj"
+              "C:\\Projects\\Github\\WeddingSeatPlanner\\SeatPlanner\\SeatPlanner.csproj": {
+                "projectPath": "C:\\Projects\\Github\\WeddingSeatPlanner\\SeatPlanner\\SeatPlanner.csproj"
               }
             }
           }
@@ -81,29 +83,31 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Projects\\WeddingSeatPlanner\\SeatPlanner\\SeatPlanner.csproj": {
+    "C:\\Projects\\Github\\WeddingSeatPlanner\\SeatPlanner\\SeatPlanner.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\WeddingSeatPlanner\\SeatPlanner\\SeatPlanner.csproj",
+        "projectUniqueName": "C:\\Projects\\Github\\WeddingSeatPlanner\\SeatPlanner\\SeatPlanner.csproj",
         "projectName": "SeatPlanner",
-        "projectPath": "C:\\Projects\\WeddingSeatPlanner\\SeatPlanner\\SeatPlanner.csproj",
-        "packagesPath": "C:\\Users\\probs\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\WeddingSeatPlanner\\SeatPlanner\\obj\\",
+        "projectPath": "C:\\Projects\\Github\\WeddingSeatPlanner\\SeatPlanner\\SeatPlanner.csproj",
+        "packagesPath": "C:\\Users\\Z002A0HD\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\Github\\WeddingSeatPlanner\\SeatPlanner\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\probs\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Z002A0HD\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -136,7 +140,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     }

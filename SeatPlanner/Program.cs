@@ -1,14 +1,12 @@
-﻿using System;
-
-namespace SeatPlanner
+﻿namespace SeatPlanner
 {
     class Program
     {
 
         static void Main(string[] args)
         {
-            var seater = new Seater();
-            seater.StartSeater();
+            var planner = new Seater();
+            planner.StartSeater();
         }
     }
 }

@@ -6,8 +6,9 @@ namespace SeatPlanner
 {
     public class GuestRelation : ValueObject<GuestRelation>
     {
-        public IOrderedEnumerable<Guest> Guests {get;}
+        public Guest[] Guests {get;}
         public RelationLevel Level {get;}
+
         private GuestRelation(Guest theGuest, Guest theOtherGuest, RelationLevel level)
         {
             if(theGuest == null || theOtherGuest == null)
@@ -20,7 +21,7 @@ namespace SeatPlanner
                 throw new ArgumentException("Cannot add relation between the same guest");
             }
 
-            Guests = new List<Guest>(){ theGuest, theOtherGuest}.OrderBy(g => g.Name);
+            Guests = new List<Guest>{ theGuest, theOtherGuest}.OrderBy(g => g.Name).ToArray();
             Level = level;
         }
 
@@ -46,7 +47,7 @@ namespace SeatPlanner
 
         public static GuestRelation To(Guest guest, Guest otherGuest, RelationLevel level)
         {
-            return new GuestRelation(guest, otherGuest, level);
+            return new(guest, otherGuest, level);
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

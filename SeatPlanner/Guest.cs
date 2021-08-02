@@ -4,6 +4,9 @@ namespace SeatPlanner
 {
     public class Guest : ValueObject<Guest>
     {
+        public string Name { get; }
+        public bool IsSeated { get; private set; }
+        
         public Guest(string name){
             Name = name;
         }
@@ -24,8 +27,5 @@ namespace SeatPlanner
         {
             yield return Name;
         }
-
-        public string Name { get; }
-        public bool IsSeated { get; private set; }
     }
 }
