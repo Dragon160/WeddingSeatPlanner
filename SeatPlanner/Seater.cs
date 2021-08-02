@@ -14,7 +14,7 @@ namespace SeatPlanner
         {
             AddTables();
             AddGuestsAndRelations();
-            PrintGuests();
+            //PrintGuests();
 
             CalculateTablePlan();
             PrintTablePlan();
@@ -98,9 +98,9 @@ namespace SeatPlanner
         {
             _tables.AddRange(new[]
             {
-                new Table("One", 8), 
-                new Table("Two", 8),
-                new Table("Three", 8),
+                new Table("One", 8, true), 
+                new Table("Two", 8, true),
+                new Table("Three", 8, true),
                 new Table("Four", 8),
                 new Table("Five", 8),
                 new Table("Six", 8),
@@ -108,33 +108,87 @@ namespace SeatPlanner
                 new Table("Eight", 8),
                 new Table("Nine", 8),
                 new Table("Ten", 8),
+                new Table("Eleven", 8),
+                new Table("Twelve", 8),
             });
         }
 
         private void AddGuestsAndRelations()
         {
-            var joseph = new Guest("Joseph K.");
-            _relations.AddRange(joseph.WithFamily("Anne K.", "Anja K.", "Martin K.", "Hans K.", "Andrea K.").Distinct());
+            var josef = new Guest("Josef K.");
+            _relations.AddRange(josef.WithFamily("Anne K.", "Anja K.", "Martin K.", "Hans K.", "Andrea K.", "Jürgen R", "Mathilde R.").Distinct());
 
             var claudia = new Guest("Claudia P.");
-            _relations.AddRange(claudia.WithFamily("Jens W.", "Oma", "Opa").Distinct());
+            _relations.AddRange(claudia.WithFamily("Jens W.", "Oma", "Opa", "Thomas M", "Steffi").Distinct());
 
             var tati = new Guest("Tatjana S.");
             _relations.AddRange(tati.WithFamily("Martin S.").Distinct());
 
+            var thomas = new Guest("Thomas P.");
+            _relations.AddRange(thomas.WithFamily("Asha C.").Distinct());
+
+            var julia = new Guest("Julia S");
+            _relations.AddRange(julia.WithFamily("Torsten S.").Distinct());
+
+            var max = new Guest("Max M");
+            _relations.AddRange(max.WithFamily("Anika M.").Distinct());
+
+            var gerry = new Guest("Gerry");
+            _relations.AddRange(gerry.WithFamily("Petra").Distinct());
+
+            var mimi = new Guest("Jemima");
+            _relations.AddRange(mimi.WithFamily("Andre", "Madita", "Luisa", "Jonas", "Becci", "Levi").Distinct());
+
+            var bocki = new Guest("Christoph M");
+            _relations.AddRange(bocki.WithFamily("Andi M").Distinct());
+
+            var wolf = new Guest("Michael W");
+            _relations.AddRange(wolf.WithFamily("Christina W").Distinct());
+
+            var franz = new Guest("Franz");
+            _relations.AddRange(franz.WithFamily("Ramona F.").Distinct());
+
+            var barbara = new Guest("Barbara R");
+            _relations.AddRange(barbara.WithFamily("Michi S").Distinct());
+
+            var alex = new Guest("Alex B");
+            _relations.AddRange(alex.WithFamily("Eva A", "Benni D").Distinct());
+
+            var chris = new Guest("Chris B");
+            _relations.AddRange(chris.WithFamily("Steffi A").Distinct());
+
+            var sonja = new Guest("Sonja K");
+            _relations.AddRange(sonja.WithFamily("Cornelia R").Distinct());
+
+            var Kilian = new Guest("Kili R");
+            _relations.AddRange(Kilian.WithFamily("Lena R").Distinct());
+
+            var andi = new Guest("Andreas R");
+            _relations.AddRange(andi.WithFamily("Helen B").Distinct());
+            
+            var sms = new Guest("SMS");
+            _relations.AddRange(sms.WithFamily("Anna K", "Ched", "Micha", "Dahu", "Flori").Distinct());
+
+            var susi = new Guest("Susi");
             var wagner = new Guest("Christoph W.");
-            var atif = new Guest("Atif Ö.");
-            _relations.Add(GuestRelation.To(wagner, atif, RelationLevel.GoodFriends));
-
-            var wolf = new Guest("Michi W.");
-            var franz = new Guest("Franz. H.");
-            var christina = new Guest("Christina W.");
-            var ramona = new Guest("Ramona F.");
+            var atif = new Guest("Atif");
+            var marcella = new Guest("marcella");
+            _relations.Add(GuestRelation.To(gerry, wolf, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(marcella, julia, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(andi, franz, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(Kilian, wolf, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(Kilian, andi, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(alex, chris, RelationLevel.GoodFriends));
             _relations.Add(GuestRelation.To(wolf, franz, RelationLevel.GoodFriends));
-            _relations.Add(GuestRelation.To(wolf, christina, RelationLevel.Family));
-            _relations.Add(GuestRelation.To(franz, ramona, RelationLevel.Family));
+            _relations.Add(GuestRelation.To(bocki, franz, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(bocki, wolf, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(gerry, franz, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(wagner, sms, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(wagner, atif, RelationLevel.Family));
+            _relations.Add(GuestRelation.To(barbara, susi, RelationLevel.Family));
+            _relations.Add(GuestRelation.To(max, franz, RelationLevel.Known));
+            _relations.Add(GuestRelation.To(max, wolf, RelationLevel.Known));
 
-            _guests.Add(wagner);
             _guests.AddRange(_relations.SelectMany(rel => rel.InvolvedGuests()).Distinct());
         }
 

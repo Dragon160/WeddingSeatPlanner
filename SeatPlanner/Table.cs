@@ -15,9 +15,13 @@ namespace SeatPlanner
         public Table(string id, int seats, bool shallReserveTwoForWeddingCouple = false)
         {
             Seats = shallReserveTwoForWeddingCouple ? seats-2 : seats;
+            PhysicalSeats = seats;
             SeatedGuests = new();
             Id = id;
         }
+
+        private int PhysicalSeats { get;}
+        private int PhysicalFreeSeats => PhysicalSeats - (SeatedGuests.Count);
 
         private void SeatGuest(Guest guest)
         {
@@ -44,7 +48,7 @@ namespace SeatPlanner
             {
                 desc.AppendLine($" {guest}  ");
             }
-            desc.AppendLine($"------Free ({p.FreeSeats})---");
+            desc.AppendLine($"------Free ({p.PhysicalFreeSeats})---");
             desc.AppendLine();
 
             return desc.ToString();
@@ -58,7 +62,7 @@ namespace SeatPlanner
             {
                 desc.AppendLine($" {guest}  ");
             }
-            desc.AppendLine($"------Free ({FreeSeats})---");
+            desc.AppendLine($"------Free ({PhysicalFreeSeats})---");
             desc.AppendLine();
 
             return desc.ToString();
