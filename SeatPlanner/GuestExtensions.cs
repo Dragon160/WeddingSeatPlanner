@@ -7,9 +7,10 @@ namespace SeatPlanner
     {
         public static IEnumerable<GuestRelation> WithFamily(this Guest guest, params string[] familyNames)
         {
-            var familyMembers = new List<Guest>();
-            familyMembers.AddRange(familyNames.Select(name => new Guest(name)));
-            return familyMembers.Select(member => GuestRelation.To(guest, member, new RelationLevel(10)));
+            var familyMembers = familyNames.Select(name => new Guest(name)).ToList();
+            familyMembers.Add(guest);
+            return familyMembers
+                .SelectMany(member => GuestRelation.To(member, familyMembers.ToArray(),RelationLevel.Family));
         }
     }
 }

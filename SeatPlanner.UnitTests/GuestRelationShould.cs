@@ -10,7 +10,7 @@ namespace SeatPlanner.UnitTests
         {
             var guest1 = new Guest("Anna");
             var guest2 = new Guest("Joseph");
-            var sut = GuestRelation.To(guest2, guest1, new RelationLevel(10));
+            var sut = GuestRelation.To(guest2, guest1, RelationLevel.Known);
 
             Assert.True(sut.ContainsGuest(guest1));
         }
@@ -20,7 +20,7 @@ namespace SeatPlanner.UnitTests
         {
             var guest1 = new Guest("Anna");
             var guest2 = new Guest("Joseph");
-            var sut = GuestRelation.To(guest2, guest1, new RelationLevel(10));
+            var sut = GuestRelation.To(guest2, guest1, RelationLevel.Known);
 
             Assert.Equal(new[]{guest1, guest2}, sut.InvolvedGuests());
         }
@@ -31,8 +31,8 @@ namespace SeatPlanner.UnitTests
             var guest1 = new Guest("Anna");
             var guest2 = new Guest("Joseph");
 
-            var sut1 = GuestRelation.To(guest1, guest2, new RelationLevel(10));
-            var sut2 = GuestRelation.To(guest2, guest1, new RelationLevel(10));
+            var sut1 = GuestRelation.To(guest1, guest2, RelationLevel.Known);
+            var sut2 = GuestRelation.To(guest2, guest1, RelationLevel.Known);
 
             Assert.Equal(sut1,sut2);
         }
@@ -44,7 +44,7 @@ namespace SeatPlanner.UnitTests
             var guest2 = new Guest("Joseph");
 
 
-            Assert.Equal(GuestRelation.To(guest1, guest2, new RelationLevel(10)), GuestRelation.To(guest1, guest2, new RelationLevel(10)));
+            Assert.Equal(GuestRelation.To(guest1, guest2, RelationLevel.Known), GuestRelation.To(guest1, guest2, RelationLevel.Known));
         }
 
         [Fact]
@@ -53,13 +53,13 @@ namespace SeatPlanner.UnitTests
             var guest1 = new Guest("Anna");
             var guest2 = new Guest("Anna");
             
-            Assert.Throws<ArgumentException>(()=> GuestRelation.To(guest1, guest2, new RelationLevel(10)));
+            Assert.Throws<ArgumentException>(()=> GuestRelation.To(guest1, guest2, RelationLevel.Known));
         }
 
         [Fact]
         public void ThrowWhenNoGuests()
         {
-            Assert.Throws<ArgumentNullException>(() => GuestRelation.To(null, (Guest)null, new RelationLevel(10)));
+            Assert.Throws<ArgumentNullException>(() => GuestRelation.To(null, (Guest)null, RelationLevel.Known));
         }
     }
 }

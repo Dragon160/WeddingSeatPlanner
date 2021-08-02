@@ -5,11 +5,11 @@ namespace SeatPlanner
     public record RelationLevel: IComparable
     {
         public int Level { get; init; }
-        public RelationLevel(int level)
+        private RelationLevel(int level)
         {
-            if (level is > 10 or < 1)
+            if (level is > 3 or < 0)
             {
-                throw new ArgumentOutOfRangeException($"{level} not between 1 and 10)");
+                throw new ArgumentOutOfRangeException($"{level} not between 0 and 3)");
             }
             Level = level;
         }
@@ -17,6 +17,11 @@ namespace SeatPlanner
         {
             return $"{p.Level}";
         }
+
+        public static RelationLevel Family => new (3);
+        public static RelationLevel GoodFriends => new (2);
+        public static RelationLevel Known => new (1);
+        public static RelationLevel Foreigner => new (0);
 
         public override string ToString()
         {

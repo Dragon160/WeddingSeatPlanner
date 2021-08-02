@@ -32,55 +32,51 @@ namespace SeatPlanner
         private void CalculateTablePlan()
         {
             // prioritize all guests with relations
-            foreach (var guest in _relations.SelectMany(r => r.InvolvedGuests()))
-            {
-                PlaceGuest(guest);
-            }
+            PlaceForRelationShipLevel(RelationLevel.Family);
+            PlaceForRelationShipLevel(RelationLevel.GoodFriends);
+            PlaceForRelationShipLevel(RelationLevel.Known);
 
-            // remaining guests
+            PlaceRemaining();
+
+        }
+
+        private void PlaceRemaining()
+        {
             foreach (var remainingGuest in _guests.Where(g => g.IsSeated == false).ToArray())
             {
-                PlaceGuest(remainingGuest);
+                PlaceInFirstFreeTable(remainingGuest);
             }
         }
 
-        private void PlaceGuest(Guest guest)
+        private void PlaceForRelationShipLevel(RelationLevel relationLevel)
         {
-            while (guest.IsSeated == false)
+            var familyMemberRelationships = _relations.Where(rel => rel.GuestRelationship.Item3 == relationLevel).ToArray();
+            foreach (var member in familyMemberRelationships.SelectMany(f => f.InvolvedGuests()))
             {
-                var guestRelationsOrdered = _relations
-                    .Where(p => p.ContainsGuest(guest))
-                    .OrderBy(p => p.GuestRelationship.Item3).ToList();
+                if(member.IsSeated)
+                    continue;
+                
+                var familyOfMember = familyMemberRelationships.Where(p => p.ContainsGuest(member))
+                    .SelectMany(f => f.InvolvedGuests()).Distinct();
 
-                // no relation to anyone -> pick first free table
-                if (guestRelationsOrdered.Count == 0)
+                var freeTableForAllMembers = _tables.FirstOrDefault(t => t.FreeSeats >= familyOfMember.Count());
+                if (freeTableForAllMembers == null)
                 {
-                    PlaceInFirstFreeTable(guest);
+                    // no splitting supported ATM
+                    throw new Exception($"Cannot find a free table for family size of {familyOfMember.Count()}");
                 }
 
-                // there are relations
-                foreach (var sortedRelationShip in guestRelationsOrdered)
+                foreach (var guest in familyOfMember)
                 {
-                    var theChoosenTable = _tables.FirstOrDefault(t =>
-                        t.IsFree() && t.SeatedGuests.Contains(sortedRelationShip.TheOtherPerson(guest)));
-
-                    // no table with relatives found -> pick first free table
-                    if (theChoosenTable == null)
-                    {
-                        PlaceInFirstFreeTable(guest);
-                        break;
-                    }
-
-                    // found a table with known people -> pick that one
-                    if (theChoosenTable.TryPlaceGuest(guest))
-                        break;
+                    freeTableForAllMembers.TryPlaceGuest(guest);
                 }
+
             }
         }
 
         private void PlaceInFirstFreeTable(Guest guest)
         {
-            var freeTable = _tables.FirstOrDefault(t => t.IsFree());
+            var freeTable = _tables.FirstOrDefault(t => t.IsFree);
             if (freeTable == null)
                 throw new Exception("No more free table available");
 
@@ -117,17 +113,27 @@ namespace SeatPlanner
 
         private void AddGuestsAndRelations()
         {
-            var joseph = new Guest("Joseph Klein");
-            _relations.AddRange(joseph.WithFamily("Anne Klein", "Anja Klein", "Martin Klein", "Hans Klein", "Andrea Klein").Distinct());
+            var joseph = new Guest("Joseph K.");
+            _relations.AddRange(joseph.WithFamily("Anne K.", "Anja K.", "Martin K.", "Hans K.", "Andrea K.").Distinct());
 
-            var claudia = new Guest("Claudia Probst");
-            _relations.AddRange(claudia.WithFamily("Jens Wagenführer", "Oma", "Opa").Distinct());
+            var claudia = new Guest("Claudia P.");
+            _relations.AddRange(claudia.WithFamily("Jens W.", "Oma", "Opa").Distinct());
 
-            var tati = new Guest("Tatjana Schulz");
-            _relations.AddRange(tati.WithFamily("Martin Schulz").Distinct());
+            var tati = new Guest("Tatjana S.");
+            _relations.AddRange(tati.WithFamily("Martin S.").Distinct());
 
-            var wagner = new Guest("Christoph Wagner");
-            
+            var wagner = new Guest("Christoph W.");
+            var atif = new Guest("Atif Ö.");
+            _relations.Add(GuestRelation.To(wagner, atif, RelationLevel.GoodFriends));
+
+            var wolf = new Guest("Michi W.");
+            var franz = new Guest("Franz. H.");
+            var christina = new Guest("Christina W.");
+            var ramona = new Guest("Ramona F.");
+            _relations.Add(GuestRelation.To(wolf, franz, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(wolf, christina, RelationLevel.Family));
+            _relations.Add(GuestRelation.To(franz, ramona, RelationLevel.Family));
+
             _guests.Add(wagner);
             _guests.AddRange(_relations.SelectMany(rel => rel.InvolvedGuests()).Distinct());
         }

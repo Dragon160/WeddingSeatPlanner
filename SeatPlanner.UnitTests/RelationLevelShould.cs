@@ -8,15 +8,7 @@ namespace SeatPlanner.UnitTests
         [Fact]
         public void BeEqual()
         {
-            Assert.Equal(new RelationLevel(2), new RelationLevel(2));
-        }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(11)]
-        public void ThrowOnInvalidLevels(int lvl)
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(()=> new RelationLevel(lvl));
+            Assert.Equal(RelationLevel.Known, RelationLevel.Known);
         }
     }
 }

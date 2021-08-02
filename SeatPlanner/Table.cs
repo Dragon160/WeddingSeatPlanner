@@ -8,7 +8,8 @@ namespace SeatPlanner
     {
         public int Seats { get; }
         public List<Guest> SeatedGuests;
-        private int FreeSeats => Seats-(SeatedGuests.Count);
+        public bool IsFree => FreeSeats > 0;
+        public int FreeSeats => Seats-(SeatedGuests.Count);
         public string Id { get; }
 
         public Table(string id, int seats, bool shallReserveTwoForWeddingCouple = false)
@@ -24,7 +25,7 @@ namespace SeatPlanner
             guest.SetSeated();
         }
 
-        public bool IsFree() => FreeSeats > 0;
+        
 
         public bool TryPlaceGuest(Guest guest)
         {
@@ -38,12 +39,12 @@ namespace SeatPlanner
         public static implicit operator string(Table p)
         {
             var desc = new StringBuilder();
-            desc.AppendLine($"------Table {p.Id}-------");
+            desc.AppendLine($"------Table {p.Id}-----------");
             foreach (var guest in p.SeatedGuests)
             {
-                desc.AppendLine(guest);
+                desc.AppendLine($" {guest}  ");
             }
-            desc.AppendLine("------------------------");
+            desc.AppendLine($"------Free ({p.FreeSeats})---");
             desc.AppendLine();
 
             return desc.ToString();
@@ -52,12 +53,12 @@ namespace SeatPlanner
         public override string ToString()
         {
             var desc = new StringBuilder();
-            desc.AppendLine($"------Table {Id}-------");
+            desc.AppendLine($"------Table {Id}-----------");
             foreach (var guest in SeatedGuests)
             {
-                desc.AppendLine(guest);
+                desc.AppendLine($" {guest}  ");
             }
-            desc.AppendLine("------------------------");
+            desc.AppendLine($"------Free ({FreeSeats})---");
             desc.AppendLine();
 
             return desc.ToString();

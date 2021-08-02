@@ -22,7 +22,6 @@ namespace SeatPlanner
 
             var guestContainer = new[] { theGuest, theOtherGuest }.OrderBy(g => g.Name).ToArray();
             GuestRelationship = new Tuple<Guest, Guest, RelationLevel>(guestContainer.First(), guestContainer.Last(), level);
-
         }
 
         public static implicit operator string(GuestRelation p)
