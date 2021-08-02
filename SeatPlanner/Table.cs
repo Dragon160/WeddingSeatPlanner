@@ -8,7 +8,7 @@ namespace SeatPlanner
     {
         public int Seats { get; }
         public List<Guest> SeatedGuests;
-        private int freeSeats => Seats- (SeatedGuests.Count);
+        private int FreeSeats => Seats-(SeatedGuests.Count);
         public string Id { get; }
 
         public Table(string id, int seats, bool shallReserveTwoForWeddingCouple = false)
@@ -24,29 +24,39 @@ namespace SeatPlanner
             guest.SetSeated();
         }
 
-        public void TryToPlaceGuestWithNeighbours(Guest guest, params GuestRelation[] allRelations)
+        public bool IsFree() => FreeSeats > 0;
+
+        public bool TryPlaceGuest(Guest guest)
         {
-            if(SeatedGuests.Count >= Seats)
-                return;
+            if(FreeSeats < 1)
+                return false;
 
-            var guestAndNearNeighours = allRelations
-                                        .Where(rel => rel.ContainsGuest(guest))
-                                        .OrderBy(rel => rel.GuestRelationship.Item3)
-                                        .SelectMany(rel => rel.InvolvedGuests())
-                                        .Where(guest => guest.IsSeated == false)
-                                        .Take(freeSeats);
+            SeatGuest(guest);
+            return true;
+        }
 
-            foreach(var guy in guestAndNearNeighours)
+        public static implicit operator string(Table p)
+        {
+            var desc = new StringBuilder();
+            desc.AppendLine($"------Table {p.Id}-------");
+            foreach (var guest in p.SeatedGuests)
             {
-                SeatGuest(guy);
+                desc.AppendLine(guest);
             }
+            desc.AppendLine("------------------------");
+            desc.AppendLine();
+
+            return desc.ToString();
         }
 
         public override string ToString()
         {
             var desc = new StringBuilder();
             desc.AppendLine($"------Table {Id}-------");
-            SeatedGuests.Select(guest => desc.AppendLine(guest.ToString()));
+            foreach (var guest in SeatedGuests)
+            {
+                desc.AppendLine(guest);
+            }
             desc.AppendLine("------------------------");
             desc.AppendLine();
 
