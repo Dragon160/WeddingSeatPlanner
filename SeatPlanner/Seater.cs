@@ -14,7 +14,7 @@ namespace SeatPlanner
         {
             AddTables();
             AddGuestsAndRelations();
-            //PrintGuests();
+            PrintGuests();
 
             CalculateTablePlan();
             PrintTablePlan();
@@ -104,9 +104,9 @@ namespace SeatPlanner
         {
             _tables.AddRange(new[]
             {
-                new Table("One", 8, true), 
-                new Table("Two", 8, true),
-                new Table("Three", 8, true),
+                new Table("One", 8), 
+                new Table("Two", 10, true),
+                new Table("Three", 8),
                 new Table("Four", 8),
                 new Table("Five", 8),
                 new Table("Six", 8),
@@ -118,6 +118,9 @@ namespace SeatPlanner
 
         private void AddGuestsAndRelations()
         {
+            var michi = new Guest("Michi");
+            _relations.AddRange(michi.WithFamily("Schnucki"));
+
             var josef = new Guest("Josef K.");
             _relations.AddRange(josef.WithFamily("Anne K.", "Anja K.", "Martin K.", "Hans K.", "Andrea K.", "Jürgen R", "Mathilde R.").Distinct());
 
@@ -138,9 +141,6 @@ namespace SeatPlanner
 
             var franzi = new Guest("Franzi H");
             _relations.AddRange(franzi.WithFamily("Flo H").Distinct());
-
-            var betzi = new Guest("Betzi");
-            _relations.AddRange(betzi.WithFamily("Jenny").Distinct());
 
             var gerry = new Guest("Gerry");
             _relations.AddRange(gerry.WithFamily("Petra").Distinct());
@@ -176,15 +176,20 @@ namespace SeatPlanner
             _relations.AddRange(sms.WithFamily("Anna K", "Ched", "Micha", "Dahu", "Flori").Distinct());
 
             var susi = new Guest("Susi");
+            var aichi = new Guest("Aichi");
             var wagner = new Guest("Christoph W.");
             var atif = new Guest("Atif");
+            var betzi = new Guest("Betzi");
+
             var marcella = new Guest("Marcella");
+            _relations.AddRange(marcella.WithFamily("Lucas").Distinct());
+
             _relations.Add(GuestRelation.To(wagner, atif, RelationLevel.Family));
             _relations.Add(GuestRelation.To(barbara, susi, RelationLevel.Family));
             _relations.Add(GuestRelation.To(sms, wagner, RelationLevel.Family));
             _relations.Add(GuestRelation.To(marcella, julia, RelationLevel.Family));
             _relations.Add(GuestRelation.To(franzi, max, RelationLevel.GoodFriends));
-            _relations.Add(GuestRelation.To(franzi, betzi, RelationLevel.GoodFriends));
+            _relations.Add(GuestRelation.To(franzi, betzi, RelationLevel.Family));
             _relations.Add(GuestRelation.To(betzi, bocki, RelationLevel.GoodFriends));
             _relations.Add(GuestRelation.To(andi, franz, RelationLevel.GoodFriends));
             _relations.Add(GuestRelation.To(kilian, wolf, RelationLevel.GoodFriends));
@@ -203,17 +208,6 @@ namespace SeatPlanner
         private void PrintGuests()
         {
             Console.WriteLine($"All Guests({_guests.Count})........");
-            foreach (var guest in _guests)
-            {
-                Console.WriteLine(guest);
-            }
-
-            Console.WriteLine("");
-            Console.WriteLine("with relations........");
-            foreach (var rels in _relations)
-            {
-                Console.WriteLine(rels);
-            }
         }
     }
 }
